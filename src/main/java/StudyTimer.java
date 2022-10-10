@@ -1,4 +1,3 @@
-import java.awt.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -14,7 +13,7 @@ public class StudyTimer {
     private double remainingTimerDuration;
     private String studyDoneAlarm;
     private String breakDoneAlarm;
-    private StudyControllerInterface studyController;
+    private StudyControllerMethods studyController;
     private Timer countdownTimer = new Timer();
     private boolean isStudyPhase = true;
     public double getBreakDuration() {
@@ -24,7 +23,7 @@ public class StudyTimer {
         this.studyDuration = studyDuration;
     }
 
-    public StudyTimer(double studyDuration, double breakDuration, StudyControllerInterface studyController) {
+    public StudyTimer(double studyDuration, double breakDuration, StudyControllerMethods studyController) {
         this.studyDuration = studyDuration;
         this.breakDuration = breakDuration;
         this.studyController = studyController;
@@ -51,11 +50,7 @@ public class StudyTimer {
                         cancel();
                         remainingTimerDuration = breakDuration;
                         isStudyPhase = false;
-                        try {
-                            timerIsDone();
-                        } catch (AWTException e) {
-                            throw new RuntimeException(e);
-                        }
+                        timerIsDone();
                     }
                 } else {
 
@@ -63,11 +58,7 @@ public class StudyTimer {
                         cancel();
                         remainingTimerDuration = studyDuration;
                         isStudyPhase = true;
-                        try {
-                            timerIsDone();
-                        } catch (AWTException e) {
-                            throw new RuntimeException(e);
-                        }
+                        timerIsDone();
                     }
                 }
             }
@@ -75,7 +66,7 @@ public class StudyTimer {
         countdownTimer.scheduleAtFixedRate(myTimerTask, 0, 1000);
     }
 
-    private void timerIsDone() throws AWTException {
+    private void timerIsDone(){
         if (isStudyPhase == false) {
             studyController.phaseDone(this, false);
         } else {

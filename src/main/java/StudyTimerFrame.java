@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
 public class StudyTimerFrame extends JFrame{
     JFrame frame = new JFrame("Study Timer");
@@ -8,18 +9,13 @@ public class StudyTimerFrame extends JFrame{
     JLabel phaseName = new JLabel("Study Timer");
     JLabel timeLeft = new JLabel();
     JLabel inputInfo = new JLabel("Bitte die gewünschten Zeiten in Minuten eintragen:");
-    JButton createTimers = new JButton("Create Timers");
-    JLabel studyPhase1 = new JLabel("1. Lernphase");
-    JLabel breakPhase1 = new JLabel("1. Pause");
-    JTextField studyDuration1 = new JTextField("45");
-    JTextField breakDuration1 = new JTextField("10");
-    JLabel studyPhase2 = new JLabel("2. Lernphase");
-    JLabel breakPhase2 = new JLabel("2. Pause");
-    JTextField studyDuration2 = new JTextField("45");
-    JTextField breakDuration2 = new JTextField("20");
-    JLabel studyPhase3 = new JLabel("3. Lernphase");
+    JLabel studyPhase = new JLabel("Lernphasendauer:");
+    JLabel breakPhase = new JLabel("Pausendauer:");
+    JLabel timerAmountPrompt = new JLabel("Anzahl der Lernphasen:");
+    JTextField studyDuration = new JTextField("45");
+    JTextField breakDuration = new JTextField("10");
+    JTextField timerAmount = new JTextField("3");
     JButton setTimes = new JButton("Zeiten setzen");
-    JTextField studyDuration3 = new JTextField("45");
     public StudyTimerFrame() {
 
 
@@ -39,57 +35,64 @@ public class StudyTimerFrame extends JFrame{
         timeLeft.setHorizontalAlignment(SwingConstants.CENTER);
         inputInfo.setBounds(0,75,400,60);
         inputInfo.setHorizontalAlignment(SwingConstants.CENTER);
-        studyPhase1.setBounds(50,150,75,20);
-        studyDuration1.setBounds(125,150,30,20);
-        breakPhase1.setBounds(160,150,50,20);
-        breakDuration1.setBounds(210,150,30,20);
-        studyPhase2.setBounds(50,175,75,20);
-        studyDuration2.setBounds(125,175,30,20);
-        breakPhase2.setBounds(160,175,50,20);
-        breakDuration2.setBounds(210,175,30,20);
-        studyPhase3.setBounds(50,200,75,20);
-        studyDuration3.setBounds(125,200,30,20);
+        studyPhase.setBounds(50,150,120,20);
+        studyDuration.setBounds(160,150,30,20);
+        breakPhase.setBounds(200,150,120,20);
+        breakDuration.setBounds(285,150,30,20);
+        timerAmountPrompt.setBounds(50,180,140,20);
+        timerAmount.setBounds(190,180,30,20);
         setTimes.setBounds(125,230,150,20);
 
         frame.add(phaseName);
         frame.add(inputInfo);
-        frame.add(createTimers);
-        frame.add(studyPhase1);
-        frame.add(studyDuration1);
-        frame.add(breakPhase1);
-        frame.add(breakDuration1);
-        frame.add(studyPhase2);
-        frame.add(studyDuration2);
-        frame.add(breakPhase2);
-        frame.add(breakDuration2);
-        frame.add(studyPhase3);
-        frame.add(studyDuration3);
+        frame.add(studyPhase);
+        frame.add(studyDuration);
+        frame.add(breakPhase);
+        frame.add(breakDuration);
+        frame.add(timerAmount);
+        frame.add(timerAmountPrompt);
         frame.add(setTimes);
 
+        studyDuration.addKeyListener((new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+                if ( ((c < '0') || (c > '9')) && (c != KeyEvent.VK_BACK_SPACE)) {
+                    e.consume();
+                }
+            }
+        }));
+        breakDuration.addKeyListener((new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+                if ( ((c < '0') || (c > '9')) && (c != KeyEvent.VK_BACK_SPACE)) {
+                    e.consume();
+                }
+            }
+        }));
+        timerAmount.addKeyListener((new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+                if ( ((c < '0') || (c > '9')) && (c != KeyEvent.VK_BACK_SPACE)) {
+                    e.consume();
+                }
+            }
+        }));
         setTimes.addActionListener(e -> setPhaseTimes());
     }
     public  void setPhaseTimes() {
-        try {
-            String studyDurationInput1 = studyDuration1.getText();
-        double sd1 = Double.parseDouble(studyDurationInput1)* 60;
-        String pauseDurationInput1 = breakDuration1.getText();
-        double pd1 = Double.parseDouble(pauseDurationInput1)* 60;
-        String studyDurationInput2 = studyDuration2.getText();
-        double sd2 = Double.parseDouble(studyDurationInput2) * 60;
-        String pauseDurationInput2 = breakDuration2.getText();
-        double pd2 = Double.parseDouble(pauseDurationInput2) * 60;
-        String studyDurationInput3 = studyDuration3.getText();
-        double sd3 = Double.parseDouble(studyDurationInput3) * 60;
-        frame.remove(studyPhase1);
-        frame.remove(studyDuration1);
-        frame.remove(breakPhase1);
-        frame.remove(breakDuration1);
-        frame.remove(studyPhase2);
-        frame.remove(studyDuration2);
-        frame.remove(breakPhase2);
-        frame.remove(breakDuration2);
-        frame.remove(studyPhase3);
-        frame.remove(studyDuration3);
+
+        String studyDurationInput = studyDuration.getText();
+        double studyduration = Double.parseDouble(studyDurationInput)* 60;
+        String pauseDurationInput = breakDuration.getText();
+        double breakduration = Double.parseDouble(pauseDurationInput)* 60;
+        String timerAmountInput = timerAmount.getText();
+        int timeramount = Integer.parseInt(timerAmountInput);
+        frame.remove(studyPhase);
+        frame.remove(studyDuration);
+        frame.remove(breakPhase);
+        frame.remove(breakDuration);
+        frame.remove(timerAmount);
+        frame.remove(timerAmountPrompt);
         frame.remove(setTimes);
         frame.remove(inputInfo);
         frame.revalidate();
@@ -99,10 +102,6 @@ public class StudyTimerFrame extends JFrame{
         frame.add(resume);
         frame.add(pause);
         pause.setEnabled(false);
-        StudyController studyController = new StudyController(timeLeft, phaseName, resume, pause,3,
-                                                                sd1, pd1, sd2, pd2, sd3);
-        } catch (Exception e){
-            inputInfo.setText("Bitte eine ganze Zahl eingeben!");
-        }
+        StudyController studyController = new StudyController(timeLeft, phaseName, resume, pause, timeramount, studyduration, breakduration);
     }
 }

@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-class StudyController implements StudyControllerInterface {
+class StudyController implements StudyControllerMethods {
 
     private JLabel timeLeft;
     private JLabel phaseName;
@@ -12,22 +12,15 @@ class StudyController implements StudyControllerInterface {
 
 
     public StudyController(JLabel timeLeft, JLabel phaseName, JButton resume, JButton pause,
-                           int timerCount, double studyDuration1, double breakDuration1,
-                           double studyDuration2, double breakDuration2, double studyDuration3) {
+                           int timerCount, double studyDuration, double breakDuration) {
         this.timeLeft = timeLeft;
         this.phaseName = phaseName;
         this.resume = resume;
         this.pause = pause;
         this.studyTimers = new StudyTimer[timerCount];
         for (int index = 0; index < timerCount; index++) {
-            studyTimers[index] = new StudyTimer(6.0, 4.0, this);
+            studyTimers[index] = new StudyTimer(studyDuration, breakDuration, this);
         }
-        studyTimers[0].setStudyDuration(studyDuration1);
-        studyTimers[0].setBreakDuration(breakDuration1);
-        studyTimers[1].setStudyDuration(studyDuration2);
-        studyTimers[1].setBreakDuration(breakDuration2);
-        studyTimers[2].setStudyDuration(studyDuration3);
-        studyTimers[timerCount -1].setBreakDuration(0.0);
         resume.addActionListener(e -> studyTimers[studySessionCounter].resumeTimer());
         this.resume.addActionListener(e -> this.phaseName.setText("Lernphase"));
         this.resume.addActionListener(e -> resume.setEnabled(false));
@@ -37,30 +30,27 @@ class StudyController implements StudyControllerInterface {
     }
 
 
-    public void phaseDone(StudyTimer studyTimer, boolean isStudyPhase) throws AWTException {
+    public void phaseDone(StudyTimer studyTimer, boolean isStudyPhase) {
         if (isStudyPhase == false) {
-            if (studyTimers[studySessionCounter].getBreakDuration() == 0.0) {
+            this.phaseName.setText("Pause");
+            phaseEndAlert(isStudyPhase);
+            studyTimers[(studySessionCounter)].resumeTimer();
+        } else {
+            this.timeLeft.setText("Pause beendet");
+            phaseEndAlert(isStudyPhase);
+            resume.setEnabled(true);
+            pause.setEnabled(false);
+            if (studySessionCounter == studyTimers.length -1) {
                 this.phaseName.setText("Lernsession beendet");
                 this.timeLeft.setText("Glückwunsch!");
                 this.pause.setEnabled(false);
-                Toolkit.getDefaultToolkit().beep();
+                phaseEndAlert(isStudyPhase);
                 this.resume.setEnabled(false);
             } else {
-                this.phaseName.setText("Pause");
-                Toolkit.getDefaultToolkit().beep();
-                studyTimers[(studySessionCounter)].resumeTimer();
+                studySessionCounter++;
             }
-        } else {
-            this.timeLeft.setText("Pause beendet");
-            Toolkit.getDefaultToolkit().beep();
-            Notification breakEndNotification = new Notification();
-            breakEndNotification.displayNotification();
-            resume.setEnabled(true);
-            pause.setEnabled(false);
-            studySessionCounter++;
         }
     }
-
     public void updatedRemainingTime(double remainingTime) {
         int shownTime = (int) remainingTime;
             shownTime /= 60;
@@ -68,5 +58,17 @@ class StudyController implements StudyControllerInterface {
             this.timeLeft.setText("Noch " + shownTime + " Minute");
         } else
             this.timeLeft.setText("Noch " + shownTime + " Minuten");
+    }
+
+    public void phaseEndAlert(boolean isStudyPhase){
+        try {
+            Toolkit.getDefaultToolkit().beep();
+            if (isStudyPhase == true) {
+                Notification.displayNotification();
+            }
+        }
+        catch (AWTException e) {
+            System.out.println("Notification failed");
+        }
     }
 }
