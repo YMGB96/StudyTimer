@@ -1,9 +1,9 @@
 import java.awt.*;
 import java.awt.TrayIcon.MessageType;
 
-public abstract class Notification {
+public interface Notification {
 
-    public static void displayNotification() throws AWTException {
+    static void displayNotification() throws AWTException {
         SystemTray tray = SystemTray.getSystemTray();
         Image image = Toolkit.getDefaultToolkit().createImage("icon.png");
 

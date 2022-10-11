@@ -17,8 +17,6 @@ public class StudyTimerFrame extends JFrame{
     JTextField timerAmount = new JTextField("3");
     JButton setTimes = new JButton("Zeiten setzen");
     public StudyTimerFrame() {
-
-
         frame.setSize(400, 350);
         frame.setLayout(null);
         frame.setVisible(true);
@@ -102,6 +100,7 @@ public class StudyTimerFrame extends JFrame{
         frame.add(resume);
         frame.add(pause);
         pause.setEnabled(false);
+
         StudyController studyController = new StudyController(timeLeft, phaseName, resume, pause, timeramount, studyduration, breakduration);
     }
 }

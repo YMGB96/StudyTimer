@@ -10,7 +10,10 @@ class StudyController implements StudyControllerMethods {
     private StudyTimer[] studyTimers;
     private int studySessionCounter = 0;
 
-
+    static class StudyInterval {
+        double studyDuration;
+        double breakDuration;
+    }
     public StudyController(JLabel timeLeft, JLabel phaseName, JButton resume, JButton pause,
                            int timerCount, double studyDuration, double breakDuration) {
         this.timeLeft = timeLeft;
@@ -22,9 +25,9 @@ class StudyController implements StudyControllerMethods {
             studyTimers[index] = new StudyTimer(studyDuration, breakDuration, this);
         }
         resume.addActionListener(e -> studyTimers[studySessionCounter].resumeTimer());
-        this.resume.addActionListener(e -> this.phaseName.setText("Lernphase"));
-        this.resume.addActionListener(e -> resume.setEnabled(false));
-        this.resume.addActionListener(e -> pause.setEnabled(true));
+        resume.addActionListener(e -> this.phaseName.setText("Lernphase"));
+        resume.addActionListener(e -> resume.setEnabled(false));
+        resume.addActionListener(e -> pause.setEnabled(true));
         pause.addActionListener(e -> studyTimers[studySessionCounter].pauseTimer());
         pause.addActionListener(e -> resume.setEnabled(true));
     }
@@ -32,20 +35,20 @@ class StudyController implements StudyControllerMethods {
 
     public void phaseDone(StudyTimer studyTimer, boolean isStudyPhase) {
         if (isStudyPhase == false) {
-            this.phaseName.setText("Pause");
+            phaseName.setText("Pause");
             phaseEndAlert(isStudyPhase);
             studyTimers[(studySessionCounter)].resumeTimer();
         } else {
-            this.timeLeft.setText("Pause beendet");
+            timeLeft.setText("Pause beendet");
             phaseEndAlert(isStudyPhase);
             resume.setEnabled(true);
             pause.setEnabled(false);
             if (studySessionCounter == studyTimers.length -1) {
-                this.phaseName.setText("Lernsession beendet");
-                this.timeLeft.setText("Glückwunsch!");
-                this.pause.setEnabled(false);
+                phaseName.setText("Lernsession beendet");
+                timeLeft.setText("Glückwunsch!");
+                pause.setEnabled(false);
                 phaseEndAlert(isStudyPhase);
-                this.resume.setEnabled(false);
+                resume.setEnabled(false);
             } else {
                 studySessionCounter++;
             }
@@ -55,9 +58,9 @@ class StudyController implements StudyControllerMethods {
         int shownTime = (int) remainingTime;
             shownTime /= 60;
         if (shownTime == 1) {
-            this.timeLeft.setText("Noch " + shownTime + " Minute");
+            timeLeft.setText("Noch " + shownTime + " Minute");
         } else
-            this.timeLeft.setText("Noch " + shownTime + " Minuten");
+            timeLeft.setText("Noch " + shownTime + " Minuten");
     }
 
     public void phaseEndAlert(boolean isStudyPhase){
