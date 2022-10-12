@@ -2,38 +2,20 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class StudyTimer {
-
-
-    public double getStudyDuration() {
-        return studyDuration;
-    }
-
-    private double studyDuration;
-    private double breakDuration;
+    private final double studyDuration;
+    private final double breakDuration;
     private double remainingTimerDuration;
-    private String studyDoneAlarm;
-    private String breakDoneAlarm;
-    private StudyControllerMethods studyController;
+    private final TimerVisualizationUpdater studyController;
     private Timer countdownTimer = new Timer();
     private boolean isStudyPhase = true;
-    public double getBreakDuration() {
-        return breakDuration;
-    }
-    public void setStudyDuration(double studyDuration) {
-        this.studyDuration = studyDuration;
-    }
 
-    public StudyTimer(double studyDuration, double breakDuration, StudyControllerMethods studyController) {
+    public StudyTimer(double studyDuration, double breakDuration, TimerVisualizationUpdater studyController) {
         this.studyDuration = studyDuration;
         this.breakDuration = breakDuration;
         this.studyController = studyController;
     }
-    public void setBreakDuration(double breakDuration) {
-        this.breakDuration = breakDuration;
-    }
-
     public void resumeTimer() {
-        if (isStudyPhase == true){
+        if (isStudyPhase){
             this.remainingTimerDuration = this.studyDuration;
         }
         TimerTask myTimerTask = new TimerTask() {
@@ -44,7 +26,7 @@ public class StudyTimer {
                 }
                 remainingTimerDuration -= 1.0;
 
-                if (isStudyPhase == true) {
+                if (isStudyPhase) {
 
                     if (remainingTimerDuration < 0) {
                         cancel();
@@ -67,11 +49,7 @@ public class StudyTimer {
     }
 
     private void timerIsDone(){
-        if (isStudyPhase == false) {
-            studyController.phaseDone(this, false);
-        } else {
-            studyController.phaseDone(this, true);
-        }
+        studyController.phaseDone(this, isStudyPhase);
     }
     public void pauseTimer() {
         countdownTimer.cancel();

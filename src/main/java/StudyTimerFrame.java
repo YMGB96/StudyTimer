@@ -4,18 +4,18 @@ import java.awt.event.*;
 
 public class StudyTimerFrame extends JFrame{
     JFrame frame = new JFrame("Study Timer");
-    JButton resume = new JButton("Timer starten");
-    JButton pause = new JButton("Timer pausieren");
-    JLabel phaseName = new JLabel("Study Timer");
-    JLabel timeLeft = new JLabel();
-    JLabel inputInfo = new JLabel("Bitte die gewünschten Zeiten in Minuten eintragen:");
-    JLabel studyPhase = new JLabel("Lernphasendauer:");
-    JLabel breakPhase = new JLabel("Pausendauer:");
+    JButton resumeCurrentTimer = new JButton("Timer starten");
+    JButton pauseCurrentTimer = new JButton("Timer pausieren");
+    JLabel currentPhaseName = new JLabel("Study Timer");
+    JLabel currentPhaseTimeLeft = new JLabel();
+    JLabel inputInformation = new JLabel("Bitte die gewünschten Zeiten in Minuten eintragen:");
+    JLabel studyDurationPrompt = new JLabel("Lernphasendauer:");
+    JLabel breakDurationPrompt = new JLabel("Pausendauer:");
     JLabel timerAmountPrompt = new JLabel("Anzahl der Lernphasen:");
     JTextField studyDuration = new JTextField("45");
     JTextField breakDuration = new JTextField("10");
     JTextField timerAmount = new JTextField("3");
-    JButton setTimes = new JButton("Zeiten setzen");
+    JButton createTimerArray = new JButton("Zeiten setzen");
     public StudyTimerFrame() {
         frame.setSize(400, 350);
         frame.setLayout(null);
@@ -23,33 +23,33 @@ public class StudyTimerFrame extends JFrame{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
 
-        phaseName.setBounds(0,30,400,60);
-        phaseName.setFont(new Font("Serif", Font.PLAIN, 25));
-        phaseName.setHorizontalAlignment(SwingConstants.CENTER);
-        resume.setBounds(125,150,150,20);
-        pause.setBounds(125,175,150,20);
-        timeLeft.setBounds(0,75,400,60);
-        timeLeft.setFont(new Font("Serif", Font.PLAIN, 25));
-        timeLeft.setHorizontalAlignment(SwingConstants.CENTER);
-        inputInfo.setBounds(0,75,400,60);
-        inputInfo.setHorizontalAlignment(SwingConstants.CENTER);
-        studyPhase.setBounds(50,150,120,20);
+        currentPhaseName.setBounds(0,30,400,60);
+        currentPhaseName.setFont(new Font("Serif", Font.PLAIN, 25));
+        currentPhaseName.setHorizontalAlignment(SwingConstants.CENTER);
+        resumeCurrentTimer.setBounds(125,150,150,20);
+        pauseCurrentTimer.setBounds(125,175,150,20);
+        currentPhaseTimeLeft.setBounds(0,75,400,60);
+        currentPhaseTimeLeft.setFont(new Font("Serif", Font.PLAIN, 25));
+        currentPhaseTimeLeft.setHorizontalAlignment(SwingConstants.CENTER);
+        inputInformation.setBounds(0,75,400,60);
+        inputInformation.setHorizontalAlignment(SwingConstants.CENTER);
+        studyDurationPrompt.setBounds(50,150,120,20);
         studyDuration.setBounds(160,150,30,20);
-        breakPhase.setBounds(200,150,120,20);
+        breakDurationPrompt.setBounds(200,150,120,20);
         breakDuration.setBounds(285,150,30,20);
         timerAmountPrompt.setBounds(50,180,140,20);
-        timerAmount.setBounds(190,180,30,20);
-        setTimes.setBounds(125,230,150,20);
+        timerAmount.setBounds(210,180,30,20);
+        createTimerArray.setBounds(125,230,150,20);
 
-        frame.add(phaseName);
-        frame.add(inputInfo);
-        frame.add(studyPhase);
+        frame.add(currentPhaseName);
+        frame.add(inputInformation);
+        frame.add(studyDurationPrompt);
         frame.add(studyDuration);
-        frame.add(breakPhase);
+        frame.add(breakDurationPrompt);
         frame.add(breakDuration);
         frame.add(timerAmount);
         frame.add(timerAmountPrompt);
-        frame.add(setTimes);
+        frame.add(createTimerArray);
 
         studyDuration.addKeyListener((new KeyAdapter() {
             public void keyTyped(KeyEvent e) {
@@ -75,7 +75,7 @@ public class StudyTimerFrame extends JFrame{
                 }
             }
         }));
-        setTimes.addActionListener(e -> setPhaseTimes());
+        createTimerArray.addActionListener(e -> setPhaseTimes());
     }
     public  void setPhaseTimes() {
 
@@ -85,22 +85,22 @@ public class StudyTimerFrame extends JFrame{
         double breakduration = Double.parseDouble(pauseDurationInput)* 60;
         String timerAmountInput = timerAmount.getText();
         int timeramount = Integer.parseInt(timerAmountInput);
-        frame.remove(studyPhase);
+        frame.remove(studyDurationPrompt);
         frame.remove(studyDuration);
-        frame.remove(breakPhase);
+        frame.remove(breakDurationPrompt);
         frame.remove(breakDuration);
         frame.remove(timerAmount);
         frame.remove(timerAmountPrompt);
-        frame.remove(setTimes);
-        frame.remove(inputInfo);
+        frame.remove(createTimerArray);
+        frame.remove(inputInformation);
         frame.revalidate();
         frame.validate();
         frame.repaint();
-        frame.add(timeLeft);
-        frame.add(resume);
-        frame.add(pause);
-        pause.setEnabled(false);
+        frame.add(currentPhaseTimeLeft);
+        frame.add(resumeCurrentTimer);
+        frame.add(pauseCurrentTimer);
+        pauseCurrentTimer.setEnabled(false);
 
-        StudyController studyController = new StudyController(timeLeft, phaseName, resume, pause, timeramount, studyduration, breakduration);
+        StudyController studyController = new StudyController(currentPhaseTimeLeft, currentPhaseName, resumeCurrentTimer, pauseCurrentTimer, timeramount, studyduration, breakduration);
     }
 }
