@@ -49,7 +49,7 @@ public class StudyControllerTests {
         assertEquals("Noch 0 Minuten",timeLeftLabel.getText());
     }
     @Test
-   public void test_phaseDone_changePhaseNameLabelToExpectedValue(){
+    public void test_phaseDone_changePhaseNameLabelToExpectedValue(){
         testStudyController.phaseDone(testStudyTimer, false);
         assertEquals("Pause",phaseNameLabel.getText());
         testStudyController.phaseDone(testStudyTimer, true);

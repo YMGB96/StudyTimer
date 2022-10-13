@@ -18,8 +18,7 @@ class StudyController implements TimerVisualizationUpdater {
         for (int index = 0; index < timerCount; index++) {
             studyTimers[index] = new StudyTimer(studyDuration, breakDuration, this);
         }
-        resumeCurrentTimer.addActionListener(e -> studyTimers[studyTimerCount].resumeTimer());
-        resumeCurrentTimer.addActionListener(e -> this.currentPhaseName.setText("Lernphase"));
+        resumeCurrentTimer.addActionListener(e -> studyTimers[studyTimerCount].resumeTimer(this.currentPhaseName));
         resumeCurrentTimer.addActionListener(e -> resumeCurrentTimer.setEnabled(false));
         resumeCurrentTimer.addActionListener(e -> pauseCurrentTimer.setEnabled(true));
         pauseCurrentTimer.addActionListener(e -> studyTimers[studyTimerCount].pauseTimer());
@@ -29,7 +28,7 @@ class StudyController implements TimerVisualizationUpdater {
         if (!isStudyPhase) {
             currentPhaseName.setText("Pause");
             phaseEndAlert(false);
-            studyTimers[(studyTimerCount)].resumeTimer();
+            studyTimers[(studyTimerCount)].resumeTimer(this.currentPhaseName);
         } else {
             currentPhaseName.setText("Pause beendet");
             phaseEndAlert(true);

@@ -77,12 +77,12 @@ public class StudyTimerFrame extends JFrame{
         }));
         createTimerArray.addActionListener(e -> setPhaseTimes());
     }
-    public  void setPhaseTimes() {
+    public void setPhaseTimes() {
 
         String studyDurationInput = studyDuration.getText();
-        double studyduration = Double.parseDouble(studyDurationInput)* 60;
+        double studyduration = Double.parseDouble(studyDurationInput);//* 60;
         String pauseDurationInput = breakDuration.getText();
-        double breakduration = Double.parseDouble(pauseDurationInput)* 60;
+        double breakduration = Double.parseDouble(pauseDurationInput);//* 60;
         String timerAmountInput = timerAmount.getText();
         int timeramount = Integer.parseInt(timerAmountInput);
         frame.remove(studyDurationPrompt);
@@ -93,14 +93,12 @@ public class StudyTimerFrame extends JFrame{
         frame.remove(timerAmountPrompt);
         frame.remove(createTimerArray);
         frame.remove(inputInformation);
-        frame.revalidate();
-        frame.validate();
         frame.repaint();
         frame.add(currentPhaseTimeLeft);
         frame.add(resumeCurrentTimer);
         frame.add(pauseCurrentTimer);
         pauseCurrentTimer.setEnabled(false);
-
-        StudyController studyController = new StudyController(currentPhaseTimeLeft, currentPhaseName, resumeCurrentTimer, pauseCurrentTimer, timeramount, studyduration, breakduration);
+        StudyController studyController = new StudyController(currentPhaseTimeLeft, currentPhaseName,
+                resumeCurrentTimer, pauseCurrentTimer, timeramount, studyduration, breakduration);
     }
 }

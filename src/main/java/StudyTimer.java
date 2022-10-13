@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -14,8 +15,9 @@ public class StudyTimer {
         this.breakDuration = breakDuration;
         this.studyController = studyController;
     }
-    public void resumeTimer() {
+    public void resumeTimer(JLabel currentPhaseName) {
         if (isStudyPhase){
+            currentPhaseName.setText("Lernphase");
             this.remainingTimerDuration = this.studyDuration;
         }
         TimerTask myTimerTask = new TimerTask() {
