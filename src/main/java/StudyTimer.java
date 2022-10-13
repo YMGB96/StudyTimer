@@ -9,11 +9,17 @@ public class StudyTimer {
     private Timer countdownTimer = new Timer();
     private boolean isStudyPhase = true;
 
+    @FunctionalInterface
+    interface StudyTimerBuilding {
+        StudyTimer build(double studyDuration, double breakDuration, TimerVisualizationUpdater studyController);
+    }
+
     public StudyTimer(double studyDuration, double breakDuration, TimerVisualizationUpdater studyController) {
         this.studyDuration = studyDuration;
         this.breakDuration = breakDuration;
         this.studyController = studyController;
     }
+
     public void resumeTimer() {
         if (isStudyPhase){
             this.remainingTimerDuration = this.studyDuration;
@@ -51,6 +57,7 @@ public class StudyTimer {
     private void timerIsDone(){
         studyController.phaseDone(this, isStudyPhase);
     }
+
     public void pauseTimer() {
         countdownTimer.cancel();
         countdownTimer = new Timer();
