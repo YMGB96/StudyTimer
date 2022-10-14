@@ -80,9 +80,9 @@ public class StudyTimerFrame extends JFrame{
     public void setPhaseTimes() {
 
         String studyDurationInput = studyDuration.getText();
-        double studyduration = Double.parseDouble(studyDurationInput);//* 60;
+        double studyduration = Double.parseDouble(studyDurationInput)* 60;
         String pauseDurationInput = breakDuration.getText();
-        double breakduration = Double.parseDouble(pauseDurationInput);//* 60;
+        double breakduration = Double.parseDouble(pauseDurationInput)* 60;
         String timerAmountInput = timerAmount.getText();
         int timeramount = Integer.parseInt(timerAmountInput);
         frame.remove(studyDurationPrompt);

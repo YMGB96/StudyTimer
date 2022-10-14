@@ -1,6 +1,5 @@
 import java.awt.*;
 import java.awt.TrayIcon.MessageType;
-
 public interface Notification {
     static void displayNotification() throws AWTException {
         SystemTray tray = SystemTray.getSystemTray();
